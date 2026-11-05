@@ -1,0 +1,565 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JavaScript DOM & Events</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #f4f7fb;
+    color: #222;
+}
+
+header {
+    background: linear-gradient(120deg, #182848, #4b6cb7);
+    color: white;
+    text-align: center;
+    padding: 30px;
+}
+
+header h1 {
+    font-size: 30px;
+    margin-bottom: 8px;
+}
+
+header p {
+    color: #d9e2ff;
+}
+
+.container {
+    width: 90%;
+    max-width: 1100px;
+    margin: 25px auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.card {
+    background: white;
+    padding: 22px;
+    border-radius: 14px;
+    box-shadow: 0 5px 18px rgba(0,0,0,0.08);
+}
+
+.card h2 {
+    color: #182848;
+    margin-bottom: 15px;
+    font-size: 21px;
+}
+
+input, select {
+    width: 100%;
+    padding: 11px;
+    margin: 7px 0 12px;
+    border: 1px solid #ccd3df;
+    border-radius: 7px;
+    font-size: 14px;
+}
+
+button {
+    background: #182848;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+button:hover {
+    background: #293f73;
+}
+
+.result {
+    margin-top: 14px;
+    padding: 12px;
+    background: #eef3ff;
+    border-radius: 7px;
+    min-height: 35px;
+    overflow-wrap: anywhere;
+}
+
+.tip {
+    display: flex;
+    gap: 15px;
+    margin: 8px 0 15px;
+    flex-wrap: wrap;
+}
+
+.tip label {
+    font-size: 14px;
+}
+
+.tip input {
+    width: auto;
+    margin-right: 4px;
+}
+
+#garden {
+    display: grid;
+    gap: 5px;
+    margin-top: 15px;
+    overflow: auto;
+    max-width: 100%;
+}
+
+#garden img {
+    width: 55px;
+    height: 55px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.coin-area {
+    text-align: center;
+}
+
+#coin {
+    width: 110px;
+    height: 110px;
+    object-fit: cover;
+    margin-bottom: 12px;
+    border-radius: 50%;
+}
+
+footer {
+    text-align: center;
+    padding: 18px;
+    color: #777;
+    font-size: 13px;
+}
+
+@media (max-width: 750px) {
+    .container {
+        grid-template-columns: 1fr;
+    }
+
+    header h1 {
+        font-size: 24px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>CAMPUS UTILITY HUB</h1>
+    <p>JavaScript DOM Elements and Events</p>
+    <p>Explore • Calculate • Learn</p>
+</header>
+
+<div class="container">
+
+    <!-- QUESTION 1: WORD ANALYZER -->
+    <div class="card">
+        <h2>1. Word Analyzer</h2>
+
+        <input type="text" id="sentence"
+        placeholder="Enter a sentence">
+
+        <button onclick="analyzeWords()">Analyze</button>
+
+        <div class="result" id="wordResult">
+            Result will appear here.
+        </div>
+    </div>
+
+    <!-- QUESTION 2: BMI CALCULATOR -->
+    <div class="card">
+        <h2>2. BMI Calculator</h2>
+
+        <input type="number" id="weight"
+        placeholder="Weight (kg)" step="any" min="0">
+
+        <input type="number" id="height"
+        placeholder="Height (cm)" step="any" min="0">
+
+        <button onclick="calculateBMI()">Get BMI</button>
+
+        <div class="result">
+            Your BMI: <b><span id="score"></span></b>
+            <br>
+            Body type: <b><span id="type"></span></b>
+        </div>
+    </div>
+
+    <!-- QUESTION 3: FRUIT FARM -->
+    <div class="card">
+        <h2>3. Fruit Farm</h2>
+
+        <input type="number" id="rows"
+        placeholder="Number of rows" min="1" max="10">
+
+        <input type="number" id="columns"
+        placeholder="Number of columns" min="1" max="10">
+
+        <button onclick="grow()">Plant Garden</button>
+
+        <div id="garden"></div>
+    </div>
+
+    <!-- QUESTION 4: CURRENCY CONVERTER -->
+    <div class="card">
+        <h2>4. Currency Converter</h2>
+
+        <input type="number" id="data"
+        placeholder="Enter amount" min="0" step="any">
+
+        <select id="from">
+            <option value="INR">Indian Rupee (INR)</option>
+            <option value="USD">US Dollar (USD)</option>
+        </select>
+
+        <select id="to">
+            <option value="USD">US Dollar (USD)</option>
+            <option value="INR">Indian Rupee (INR)</option>
+        </select>
+
+        <button onclick="convert()">Calculate</button>
+
+        <div class="result">
+            Result: <b><span id="answer"></span></b>
+        </div>
+    </div>
+
+    <!-- QUESTION 5: COIN FLIP -->
+    <div class="card">
+        <h2>5. Coin Flip</h2>
+
+        <div class="coin-area">
+            <img src="images/heads.jpg" id="coin" alt="Coin showing heads">
+            <br>
+
+            <button id="flip">Flip Coin!</button>
+
+            <div class="result">
+                Heads Total: <b><span id="num_heads">0</span></b>
+                <br>
+                Tails Total: <b><span id="num_tails">0</span></b>
+            </div>
+        </div>
+    </div>
+
+    <!-- QUESTION 6: BIRTHDAY CAKE ORDER -->
+    <div class="card">
+        <h2>6. Birthday Cake Order</h2>
+
+        <input type="number" id="small"
+        placeholder="Number of 1/2 kg Cakes" min="0" step="1">
+
+        <input type="number" id="medium"
+        placeholder="Number of 1 kg Cakes" min="0" step="1">
+
+        <input type="number" id="large"
+        placeholder="Number of 2 kg Cakes" min="0" step="1">
+
+        <p><b>Select Tip Percentage:</b></p>
+
+        <div class="tip">
+            <label>
+                <input type="radio" value="10" name="tip"> 10%
+            </label>
+
+            <label>
+                <input type="radio" value="15" name="tip" checked> 15%
+            </label>
+
+            <label>
+                <input type="radio" value="20" name="tip"> 20%
+            </label>
+        </div>
+
+        <button id="submit">Calculate Order</button>
+
+        <div class="result">
+            <p>Cost: ₹<span id="base"></span></p>
+            <p>Tax (9%): ₹<span id="tax"></span></p>
+            <p>Tip: ₹<span id="tipAmount"></span></p>
+            <b>Total Bill: ₹<span id="price"></span></b>
+        </div>
+    </div>
+
+</div>
+
+<footer>
+    Web Technology Lab • Experiment 05
+</footer>
+
+<script>
+
+// QUESTION 1: WORD ANALYZER
+
+function analyzeWords() {
+    var sentence = document.getElementById("sentence").value.trim();
+
+    if (sentence === "") {
+        document.getElementById("wordResult").innerHTML =
+        "Please enter a sentence.";
+        return;
+    }
+
+    var words = sentence.split(/\s+/);
+    var shortest = words[0];
+    var longest = words[0];
+
+    for (var i = 1; i < words.length; i++) {
+        if (words[i].length < shortest.length) {
+            shortest = words[i];
+        }
+
+        if (words[i].length > longest.length) {
+            longest = words[i];
+        }
+    }
+
+    document.getElementById("wordResult").innerHTML =
+    "Shortest: <b>" + shortest +
+    "</b><br>Longest: <b>" + longest + "</b>";
+}
+
+
+// QUESTION 2: BMI CALCULATOR
+
+function calculateBMI() {
+    var weight = parseFloat(
+        document.getElementById("weight").value
+    );
+
+    var height = parseFloat(
+        document.getElementById("height").value
+    );
+
+    if (isNaN(weight) || isNaN(height) ||
+        weight <= 0 || height <= 0) {
+
+        document.getElementById("score").innerHTML =
+        "Invalid input";
+
+        document.getElementById("type").innerHTML =
+        "Enter valid values";
+
+        return;
+    }
+
+    height = height / 100;
+
+    var bmi = weight / (height * height);
+
+    document.getElementById("score").innerHTML =
+    bmi.toFixed(2);
+
+    var bodyType;
+
+    if (bmi < 18.5) {
+        bodyType = "Underweight";
+    }
+    else if (bmi < 25) {
+        bodyType = "Normal";
+    }
+    else if (bmi < 30) {
+        bodyType = "Overweight";
+    }
+    else {
+        bodyType = "Obese";
+    }
+
+    document.getElementById("type").innerHTML =
+    bodyType;
+}
+
+
+// QUESTION 3: FRUIT FARM
+
+function grow() {
+    var rows = parseInt(
+        document.getElementById("rows").value
+    );
+
+    var columns = parseInt(
+        document.getElementById("columns").value
+    );
+
+    var garden = document.getElementById("garden");
+
+    garden.innerHTML = "";
+
+    if (isNaN(rows) || isNaN(columns) ||
+        rows < 1 || columns < 1 ||
+        rows > 10 || columns > 10) {
+
+        garden.innerHTML =
+        "Enter rows and columns between 1 and 10.";
+
+        return;
+    }
+
+    garden.style.gridTemplateColumns =
+    "repeat(" + columns + ", 55px)";
+
+    var fruits = [
+        "images/orange.jpg",
+        "images/apple.jpg"
+    ];
+
+    for (var i = 0; i < rows; i++) {
+        for (var j = 0; j < columns; j++) {
+
+            var number = Math.floor(Math.random() * 2);
+
+            var img = document.createElement("img");
+            img.src = fruits[number];
+            img.alt = number === 0 ? "Orange" : "Apple";
+
+            garden.appendChild(img);
+        }
+    }
+}
+
+
+// QUESTION 4: CURRENCY CONVERTER
+
+function convert() {
+    var amount = parseFloat(
+        document.getElementById("data").value
+    );
+
+    var from = document.getElementById("from").value;
+    var to = document.getElementById("to").value;
+
+    var result;
+
+    if (isNaN(amount) || amount < 0) {
+        document.getElementById("answer").innerHTML =
+        "Enter a valid amount.";
+        return;
+    }
+
+    // Demonstration conversion rate: 1 USD = 67.12 INR
+
+    if (from === "INR" && to === "USD") {
+        result = amount / 67.12;
+    }
+    else if (from === "USD" && to === "INR") {
+        result = amount * 67.12;
+    }
+    else {
+        result = amount;
+    }
+
+    document.getElementById("answer").innerHTML =
+    (to === "INR" ? "₹ " : "$ ") + result.toFixed(2);
+}
+
+
+// QUESTION 5: COIN FLIP
+
+var heads = 0;
+var tails = 0;
+
+document.getElementById("flip")
+.addEventListener("click", flipFunction);
+
+function flipFunction() {
+    var number = Math.floor(Math.random() * 2);
+
+    if (number === 0) {
+        document.getElementById("coin").src =
+        "images/heads.jpg";
+
+        document.getElementById("coin").alt =
+        "Coin showing heads";
+
+        heads++;
+
+        document.getElementById("num_heads").innerHTML =
+        heads;
+    }
+    else {
+        document.getElementById("coin").src =
+        "images/tails.jpg";
+
+        document.getElementById("coin").alt =
+        "Coin showing tails";
+
+        tails++;
+
+        document.getElementById("num_tails").innerHTML =
+        tails;
+    }
+}
+
+
+// QUESTION 6: BIRTHDAY CAKE ORDER
+
+document.getElementById("submit")
+.addEventListener("click", calculateOrder);
+
+function calculateOrder() {
+    var small = document.getElementById("small").value;
+    var medium = document.getElementById("medium").value;
+    var large = document.getElementById("large").value;
+
+    if (small === "" || medium === "" || large === "" ||
+        !Number.isInteger(Number(small)) ||
+        !Number.isInteger(Number(medium)) ||
+        !Number.isInteger(Number(large)) ||
+        Number(small) < 0 ||
+        Number(medium) < 0 ||
+        Number(large) < 0) {
+
+        alert("Enter valid non-negative whole cake quantities.");
+        return;
+    }
+
+    small = Number(small);
+    medium = Number(medium);
+    large = Number(large);
+
+    var tip = parseInt(
+        document.querySelector(
+            'input[name="tip"]:checked'
+        ).value
+    );
+
+    // Cake prices
+    var cost =
+    (small * 100) +
+    (medium * 200) +
+    (large * 400);
+
+    var tax = cost * 0.09;
+
+    var totalAfterTax = cost + tax;
+
+    var tipAmount = totalAfterTax * (tip / 100);
+
+    var total = totalAfterTax + tipAmount;
+
+    document.getElementById("base").innerHTML =
+    cost.toFixed(2);
+
+    document.getElementById("tax").innerHTML =
+    tax.toFixed(2);
+
+    document.getElementById("tipAmount").innerHTML =
+    tipAmount.toFixed(2);
+
+    document.getElementById("price").innerHTML =
+    total.toFixed(2);
+}
+
+</script>
+
+</body>
+</html>
